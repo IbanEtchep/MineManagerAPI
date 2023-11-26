@@ -6,7 +6,7 @@
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
     "start": "node server.js",
-    "test": "node ace test",
+    "test": "NODE_ENV=testing node ace test",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write ."
   },

@@ -26,5 +26,6 @@ Route.get('/', async () => {
 
 Route.post('users', 'AuthController.register')
 Route.post('sessions', 'AuthController.login')
+Route.delete('sessions', 'AuthController.logout').middleware('auth')
 Route.get('me', 'AuthController.me').middleware('auth')
 Route.put('users', 'AuthController.update').middleware('auth')

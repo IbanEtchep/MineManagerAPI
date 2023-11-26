@@ -39,4 +39,10 @@ export default class AuthController {
     return response.ok(user)
   }
 
+  public async logout({ auth, response } : HttpContextContract) {
+    await auth.logout()
+
+    return response.noContent()
+  }
+
 }

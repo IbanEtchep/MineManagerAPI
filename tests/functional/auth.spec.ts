@@ -1,5 +1,6 @@
 import { test } from '@japa/runner'
 import User from '../../app/Models/User'
+import { assert } from '@japa/preset-adonis'
 
 test.group('Auth', (group) => {
   group.teardown(async () => {
@@ -34,5 +35,31 @@ test.group('Auth', (group) => {
       .loginAs(user)
 
     response.assertStatus(200)
+  })
+
+  test('update user details', async ({ client }) => {
+    const user = await User.findBy('email', 'test@test.fr')
+
+    const response = await client.put('/users')
+      .loginAs(user)
+      .json({
+        username: 'test2',
+      })
+      .send()
+
+    response.assertStatus(200)
+
+    const updatedUser = await User.find(user?.id)
+    assert.call(updatedUser?.username, 'test2')
+  })
+
+  test('logout', async ({ client }) => {
+    const user = await User.findBy('email', 'test@test.fr')
+
+    const response = await client.delete('/sessions')
+      .loginAs(user)
+      .send()
+
+    response.assertStatus(204)
   })
 })

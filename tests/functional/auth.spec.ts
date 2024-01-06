@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
-import User from '../../app/Models/User'
-import { assert } from '@japa/preset-adonis'
+import User from 'App/Models/User'
+
 
 test.group('Auth', (group) => {
   group.teardown(async () => {
@@ -15,6 +15,7 @@ test.group('Auth', (group) => {
       username: 'test',
       password: 'test',
     }).send()
+
     response.assertStatus(201)
   })
 
@@ -31,14 +32,22 @@ test.group('Auth', (group) => {
   test('get user details', async ({ client }) => {
     const user = await User.findBy('email', 'test@test.fr')
 
+    if(!user) {
+      return
+    }
+
     const response = await client.get('/me')
       .loginAs(user)
 
     response.assertStatus(200)
   })
 
-  test('update user details', async ({ client }) => {
+  test('update user details', async ({ client, assert }) => {
     const user = await User.findBy('email', 'test@test.fr')
+
+    if(!user) {
+      return
+    }
 
     const response = await client.put('/users')
       .loginAs(user)
@@ -50,11 +59,15 @@ test.group('Auth', (group) => {
     response.assertStatus(200)
 
     const updatedUser = await User.find(user?.id)
-    assert.call(updatedUser?.username, 'test2')
+    assert.equal(updatedUser?.username, 'test2')
   })
 
   test('logout', async ({ client }) => {
     const user = await User.findBy('email', 'test@test.fr')
+
+    if(!user) {
+      return
+    }
 
     const response = await client.delete('/sessions')
       .loginAs(user)

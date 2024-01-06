@@ -29,3 +29,5 @@ Route.post('sessions', 'AuthController.login')
 Route.delete('sessions', 'AuthController.logout').middleware('auth')
 Route.get('me', 'AuthController.me').middleware('auth')
 Route.put('users', 'AuthController.update').middleware('auth')
+
+Route.get('docker/containers', 'DockerController.listContainers').middleware('auth')

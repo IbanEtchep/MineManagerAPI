@@ -31,3 +31,8 @@ Route.get('me', 'AuthController.me').middleware('auth')
 Route.put('users', 'AuthController.update').middleware('auth')
 
 Route.get('docker/containers', 'DockerController.listContainers').middleware('auth')
+Route.get('docker/containers/:id', 'DockerController.getContainer').middleware('auth')
+Route.post('docker/containers/:id/start', 'DockerController.startContainer').middleware('auth')
+Route.post('docker/containers/:id/stop', 'DockerController.stopContainer').middleware('auth')
+Route.post('docker/containers/:id/restart', 'DockerController.restartContainer').middleware('auth')
+Route.post('docker/containers/:id/kill', 'DockerController.killContainer').middleware('auth')

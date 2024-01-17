@@ -84,7 +84,7 @@ class Ws {
 
     this.clientSubscriptions.forEach((subscriptions, clientId) => {
       if (subscriptions.includes(containerId)) {
-        if (state === 'start' || state === 'restart') {
+        if (state === 'start') {
           this.followContainerLogs(containerId, clientId);
         }
       }
@@ -130,6 +130,8 @@ class Ws {
 
         let cleanLine = line.toString().replace(/\uFFFD/g, ' ').replace(/\n/g, '').trim();
         if (client.includes(containerId)) {
+          cleanLine = cleanLine.replace(/\u001b\[[0-9]{1,2}m/g, '');
+
           this.io.to(clientId).emit('log', { containerId, log: cleanLine });
         }
       };

@@ -65,4 +65,18 @@ export default class DockerController {
       return response.status(500).send(err.message);
     }
   }
+
+  async commandContainer({ params, request, response }) {
+    try {
+      const dockerService = new DockerService();
+      const body = request.body();
+      console.log(body)
+      const { command } = body;
+      await dockerService.commandContainer(params.id, command);
+      return response.send('OK');
+    } catch (err) {
+      console.log(err)
+      return response.status(500).send(err.message);
+    }
+  }
 }

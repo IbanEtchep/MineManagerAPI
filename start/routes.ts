@@ -36,3 +36,4 @@ Route.post('docker/containers/:id/start', 'DockerController.startContainer').mid
 Route.post('docker/containers/:id/stop', 'DockerController.stopContainer').middleware('auth')
 Route.post('docker/containers/:id/restart', 'DockerController.restartContainer').middleware('auth')
 Route.post('docker/containers/:id/kill', 'DockerController.killContainer').middleware('auth')
+Route.post('docker/containers/:id/command', 'DockerController.commandContainer').middleware('auth')

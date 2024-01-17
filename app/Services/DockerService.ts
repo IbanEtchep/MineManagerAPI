@@ -75,4 +75,43 @@ export default class DockerService {
 
     return cpuUsage;
   }
+
+  async commandContainer(containerId: string, command: string) {
+    const container = docker.getContainer(containerId);
+
+    // Options pour attacher au conteneur
+    const options = {
+      stream: true,
+      stdin: true,
+      stdout: true,
+      stderr: true
+    };
+
+    // Attacher au conteneur
+    const stream = await container.attach(options);
+
+    return new Promise((resolve, reject) => {
+      let output = '';
+
+      stream.on('data', (chunk) => {
+        output += chunk.toString();
+      });
+
+      stream.on('end', () => {
+        console.log(output);
+        resolve(output);
+      });
+
+      stream.on('error', (err) => {
+        console.error('Error:', err);
+        reject(err);
+      });
+
+      stream.write(command + "\n");
+      stream.end();
+    });
+  }
+
+
+
 }
